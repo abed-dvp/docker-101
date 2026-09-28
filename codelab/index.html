@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Abed Codelab — Docker 101</title>
+<link rel="stylesheet" href="./styles.css?v=1">
+</head>
+<body>
+<header class="topbar">
+  <button id="menuButton" class="icon-btn">☰</button>
+  <div class="brand"><span class="logo">A</span><div><strong>Abed Codelab</strong><small>Docker 101</small></div></div>
+  <div class="actions"><a href="../README.md">README</a><a href="https://www.youtube.com/watch?v=pg19Z8LL06w" target="_blank">Video</a><button id="themeButton" class="icon-btn">◐</button></div>
+</header>
+<div class="progress-track"><div id="progressBar"></div></div>
+<div class="layout">
+<aside id="sidebar">
+  <div class="side-head"><div class="eyebrow">SELF-STUDY</div><h2>Docker 101</h2><p id="progressText"></p></div>
+  <nav id="nav"></nav>
+  <button id="resetProgress" class="text-btn">Reset progress</button>
+</aside>
+<main>
+<article>
+  <div class="meta"><span id="stepLabel"></span><a id="videoLink" target="_blank"></a></div>
+  <h1 id="title"></h1>
+  <p class="lead" id="learn"></p>
+
+  <section><h2>Learn</h2><ul id="bullets"></ul></section>
+
+  <section>
+    <div class="section-head"><h2>Example</h2><button id="copyExample" class="text-btn">Copy</button></div>
+    <pre><code id="example"></code></pre>
+    <div class="result-card"><div class="eyebrow">WHAT THIS GIVES YOU</div><p id="output"></p></div>
+  </section>
+
+  <section class="practice">
+    <div class="eyebrow">YOUR TURN</div>
+    <h2>Try it</h2>
+    <p id="challenge"></p>
+    <textarea id="answer" spellcheck="false"></textarea>
+    <div class="buttons">
+      <button id="preview" class="secondary">Run / Preview</button>
+      <button id="check" class="primary">Check answer</button>
+      <button id="resetAnswer" class="secondary">Reset</button>
+      <button id="showSolution" class="secondary">Show solution</button>
+    </div>
+    <div id="feedback" class="feedback" hidden></div>
+    <div id="previewPanel" class="preview" hidden></div>
+    <div id="solutionPanel" class="solution" hidden><div class="eyebrow">ONE POSSIBLE SOLUTION</div><pre><code id="solution"></code></pre></div>
+  </section>
+
+  <section class="takeaway"><div class="eyebrow">KEY TAKEAWAY</div><p id="takeaway"></p></section>
+
+  <footer>
+    <button id="prev" class="secondary">← Previous</button>
+    <button id="complete" class="complete">Mark step complete</button>
+    <button id="next" class="primary">Next →</button>
+  </footer>
+</article>
+</main>
+</div>
+<script src="./steps.js?v=1"></script>
+<script src="./app.js?v=1"></script>
+</body>
+</html>
