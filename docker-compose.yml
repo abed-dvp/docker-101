@@ -1,0 +1,10 @@
+services:
+  app:
+    build:
+      context: .
+    image: docker-101-app:1.0
+    container_name: docker-101-web
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000
