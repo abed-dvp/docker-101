@@ -1,0 +1,10 @@
+{
+  "name": "docker-101-app",
+  "version": "1.0.0",
+  "description": "Tiny Node.js app for learning Docker",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {}
+}
