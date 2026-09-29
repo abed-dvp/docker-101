@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Docker 101 Practical Lab</title>
+<link rel="stylesheet" href="./styles.css?v=2">
+<style>
+.lab-shell{max-width:980px;margin:auto}.lab-hero{margin-bottom:28px}.lab-progress{display:flex;align-items:center;gap:12px;margin:18px 0 28px}.lab-progress-track{flex:1;height:10px;background:var(--surface2);border-radius:999px;overflow:hidden}.lab-progress-bar{height:100%;width:0;background:var(--success);transition:.2s}.lab-step{padding:24px;border:1px solid var(--border);border-radius:16px;background:var(--surface);box-shadow:var(--shadow);margin:20px 0}.lab-step.done{border-color:var(--success)}.lab-step h2{margin:5px 0 10px}.lab-step p,.lab-step li{line-height:1.75}.lab-step pre{margin:12px 0}.lab-meta{display:flex;justify-content:space-between;align-items:center;gap:12px}.lab-badge{font-size:.72rem;font-weight:800;color:var(--accent);background:var(--accent2);padding:5px 9px;border-radius:999px}.lab-check{border:1px solid var(--border);background:var(--surface);color:var(--text);padding:9px 12px;border-radius:9px;cursor:pointer}.lab-check.done{background:var(--success);border-color:var(--success);color:white}.mental{padding:14px 16px;background:var(--accent2);border-left:4px solid var(--accent);border-radius:0 10px 10px 0}.lab-actions{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0}.lab-actions a{text-decoration:none}.danger-text{color:var(--danger)}@media(max-width:850px){.lab-meta{align-items:flex-start}.lab-step{padding:18px}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <button id="menuButton" class="icon-btn">☰</button>
+  <div class="brand"><span class="logo">A</span><div><strong>Abed Codelab</strong><small>Docker Practical Lab</small></div></div>
+  <div class="actions"><a href="./">Course</a><a href="../PRACTICE.md">Markdown Lab</a><button id="themeButton" class="icon-btn">◐</button></div>
+</header>
+<main>
+<div class="lab-shell">
+  <div class="lab-hero">
+    <div class="eyebrow">HANDS-ON PRACTICE</div>
+    <h1>Docker 101 — Step-by-Step Lab</h1>
+    <p class="lead">Run these commands on your own machine, in order. Do not just read them. Mark each step complete only after you have actually run it and understood the result.</p>
+    <div class="lab-progress"><strong id="labProgressText">0 / 12 complete</strong><div class="lab-progress-track"><div id="labProgressBar" class="lab-progress-bar"></div></div></div>
+    <div class="lab-actions"><button id="resetLab" class="secondary">Reset lab progress</button><a class="secondary" href="https://github.com/abed-dvp/docker-101" target="_blank">Open repository ↗</a></div>
+  </div>
+
+  <section class="lab-step" data-step="1">
+    <div class="lab-meta"><div><span class="lab-badge">STEP 1</span><h2>Verify Docker works</h2></div><button class="lab-check">Mark complete</button></div>
+    <p><strong>Goal:</strong> verify both the Docker CLI and Docker Engine.</p>
+    <pre><code>docker --version
+docker run hello-world
+docker ps -a</code></pre>
+    <div class="mental"><strong>Mental model</strong><br>Image → container created → process runs → process finishes → container remains in stopped/exited state.</div>
+    <p><strong>Check yourself:</strong> why does <code>hello-world</code> disappear from <code>docker ps</code> but still appear in <code>docker ps -a</code>?</p>
+  </section>
+
+  <section class="lab-step" data-step="2">
+    <div class="lab-meta"><div><span class="lab-badge">STEP 2</span><h2>Pull a ready-made image</h2></div><button class="lab-check">Mark complete</button></div>
+    <pre><code>docker pull nginx:1.27
+docker images</code></pre>
+    <div class="mental">Registry → <code>docker pull</code> → local image cache.</div>
+    <p>Confirm that <code>nginx</code> is the repository/image name and <code>1.27</code> is the tag.</p>
+  </section>
+
+  <section class="lab-step" data-step="3">
+    <div class="lab-meta"><div><span class="lab-badge">STEP 3</span><h2>Create a container and publish a port</h2></div><button class="lab-check">Mark complete</button></div>
+    <pre><code>docker run --name practice-nginx -p 8080:80 -d nginx:1.27
+docker ps</code></pre>
+    <p>Open <code>http://localhost:8080</code>.</p>
+    <div class="mental">Browser → localhost:8080 → Docker port mapping → container:80 → nginx.</div>
+  </section>
+
+  <section class="lab-step" data-step="4">
+    <div class="lab-meta"><div><span class="lab-badge">STEP 4</span><h2>Use logs and exec</h2></div><button class="lab-check">Mark complete</button></div>
+    <pre><code>docker logs practice-nginx
+docker exec -it practice-nginx sh
+
+pwd
+ls
+nginx -v
+exit</code></pre>
+    <div class="mental"><code>docker exec</code> does not create a new container. It runs another process inside the existing running container.</div>
+  </section>
+
+  <section class="lab-step" data-step="5">
+    <div class="lab-meta"><div><span class="lab-badge">STEP 5</span><h2>Practice the lifecycle</h2></div><button class="lab-check">Mark complete</button></div>
+    <pre><code>docker stop practice-nginx
+docker ps
+docker ps -a
+docker start practice-nginx
+docker restart practice-nginx
+docker stop practice-nginx
+docker rm practice-nginx</code></pre>
+    <div class="mental"><code>run</code> → new container · <code>start</code> → existing container · <code>rm</code> → delete container.</div>
+  </section>
+
+  <section class="lab-step" data-step="6">
+    <div class="lab-meta"><div><span class="lab-badge">STEP 6</span><h2>Read your Dockerfile</h2></div><button class="lab-check">Mark complete</button></div>
+    <pre><code>FROM node:20-alpine
+
+WORKDIR /app
+COPY package*.json ./
+RUN npm install --omit=dev
+COPY server.js .
+EXPOSE 3000
+CMD ["npm", "start"]</code></pre>
+    <p>Explain every line before continuing. Especially: <code>RUN</code> happens during build; <code>CMD</code> runs when a container starts.</p>
+  </section>
+
+  <section class="lab-step" data-step="7">
+    <div class="lab-meta"><div><span class="lab-badge">STEP 7</span><h2>Build your own image</h2></div><button class="lab-check">Mark complete</button></div>
+    <pre><code>docker build -t docker-101-app:1.0 .
+docker images</code></pre>
+    <div class="mental">Dockerfile + build context → <code>docker build</code> → image.</div>
+  </section>
+
+  <section class="lab-step" data-step="8">
+    <div class="lab-meta"><div><span class="lab-badge">STEP 8</span><h2>Run your own image</h2></div><button class="lab-check">Mark complete</button></div>
+    <pre><code>docker run --name docker-101-web -p 3000:3000 -d docker-101-app:1.0
+docker ps
+curl http://localhost:3000/health</code></pre>
+    <p>Open <code>http://localhost:3000</code> and <code>http://localhost:3000/health</code>.</p>
+  </section>
+
+  <section class="lab-step" data-step="9">
+    <div class="lab-meta"><div><span class="lab-badge">STEP 9</span><h2>Inspect your own container</h2></div><button class="lab-check">Mark complete</button></div>
+    <pre><code>docker exec -it docker-101-web sh
+
+pwd
+ls
+node --version
+cat server.js
+exit</code></pre>
+    <p>You should see <code>/app</code>, Node 20, and the source code copied into the image/container filesystem.</p>
+  </section>
+
+  <section class="lab-step" data-step="10">
+    <div class="lab-meta"><div><span class="lab-badge">STEP 10</span><h2>Observe build cache</h2></div><button class="lab-check">Mark complete</button></div>
+    <p>Change the message in <code>server.js</code>, then:</p>
+    <pre><code>docker build -t docker-101-app:1.1 .</code></pre>
+    <p>Watch which Dockerfile steps use cache. <code>package.json</code> did not change, so dependency installation may be reused.</p>
+    <div class="mental">Stable dependency files first → expensive install layer → frequently changing source later.</div>
+  </section>
+
+  <section class="lab-step" data-step="11">
+    <div class="lab-meta"><div><span class="lab-badge">STEP 11</span><h2>Run the new image version</h2></div><button class="lab-check">Mark complete</button></div>
+    <pre><code>docker stop docker-101-web
+docker rm docker-101-web
+docker run --name docker-101-web -p 3000:3000 -d docker-101-app:1.1</code></pre>
+    <p>Open <code>http://localhost:3000</code> and confirm the changed message.</p>
+    <div class="mental">New image ≠ automatic update of an existing container. Create a new container from the new image.</div>
+  </section>
+
+  <section class="lab-step" data-step="12">
+    <div class="lab-meta"><div><span class="lab-badge">STEP 12</span><h2>Run the project with Docker Compose</h2></div><button class="lab-check">Mark complete</button></div>
+    <pre><code>docker stop docker-101-web
+docker rm docker-101-web
+
+docker compose up --build -d
+docker compose ps
+docker compose logs app
+docker compose exec app sh
+
+printenv PORT
+exit
+
+docker compose down</code></pre>
+    <div class="mental">Manual <code>docker build</code> + long <code>docker run</code> configuration → encoded as <code>docker-compose.yml</code> + <code>docker compose up</code>.</div>
+  </section>
+
+  <section class="takeaway">
+    <div class="eyebrow">FINAL CHALLENGE</div>
+    <p>Close this page and do the workflow from memory: inspect Dockerfile → build → run → publish port → ps → logs → exec → stop → start → remove.</p>
+    <pre><code>docker build
+docker run
+docker ps
+docker ps -a
+docker logs
+docker exec
+docker stop
+docker start
+docker restart
+docker rm
+docker images
+docker compose up
+docker compose down</code></pre>
+  </section>
+</div>
+</main>
+<script>
+const key='docker-101-practical-lab-v1';
+let completed=new Set(JSON.parse(localStorage.getItem(key)||'[]'));
+const steps=[...document.querySelectorAll('.lab-step')];
+function save(){localStorage.setItem(key,JSON.stringify([...completed]))}
+function render(){
+  steps.forEach(el=>{
+    const n=Number(el.dataset.step), done=completed.has(n);
+    el.classList.toggle('done',done);
+    const b=el.querySelector('.lab-check');
+    b.classList.toggle('done',done);
+    b.textContent=done?'✓ Complete':'Mark complete';
+  });
+  document.getElementById('labProgressText').textContent=completed.size+' / '+steps.length+' complete';
+  document.getElementById('labProgressBar').style.width=(completed.size/steps.length*100)+'%';
+}
+document.querySelectorAll('.lab-check').forEach(btn=>btn.onclick=()=>{
+  const n=Number(btn.closest('.lab-step').dataset.step);
+  completed.has(n)?completed.delete(n):completed.add(n);
+  save();render();
+});
+document.getElementById('resetLab').onclick=()=>{if(confirm('Reset practical lab progress?')){completed.clear();save();render()}};
+document.getElementById('themeButton').onclick=()=>{const d=document.documentElement.dataset.theme==='dark';document.documentElement.dataset.theme=d?'light':'dark';localStorage.setItem('docker-101-theme',d?'light':'dark')};
+document.documentElement.dataset.theme=localStorage.getItem('docker-101-theme')||'light';
+render();
+</script>
+</body>
+</html>
