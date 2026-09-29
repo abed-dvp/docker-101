@@ -7,6 +7,8 @@ This repository is designed so that you can learn Docker **without keeping the v
 > 🚀 Interactive Codelab: https://abed-dvp.github.io/docker-101/  
 > 🎥 Source video: https://www.youtube.com/watch?v=pg19Z8LL06w  
 > 🧪 Runnable project: the files in this repository
+> 🧭 **Step-by-step Practical Lab:** [PRACTICE.md](./PRACTICE.md)
+> ✅ **Interactive Practical Lab:** https://abed-dvp.github.io/docker-101/codelab/practice.html
 
 ---
 
